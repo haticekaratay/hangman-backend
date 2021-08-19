@@ -2,13 +2,19 @@ class PlayersController < ApplicationController
     def index
         players = Player.all
         games = Game.all 
+        # render json: players, only: [:id, :name]
         render json: players.to_json(:include => {
             :games => {:only => [:score]},
           }, :only => [:id,:name])
     end
 
     def create
-        Player.create(name: params[:name])
+        player = Player.new(player_params)
+        if player.save
+            render json: player
+        else
+            render json: {message: player.errors.full_messages}
+        end
     end
 
     def show
@@ -18,5 +24,10 @@ class PlayersController < ApplicationController
         else
             render json: {message: "Player not found"}
         end
+    end
+
+    private
+    def player_params
+        params.require(:player).permit(:name)
     end
 end
