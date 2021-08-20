@@ -7,6 +7,19 @@ class GamesController < ApplicationController
               }, :only => :score)
     end
 
-  
+    def create
+        game = Game.new(game_params)
+        if game.save
+            render json: game
+        else
+            render json: {message: "Game creation is not succesfull."}
+        end
+    end
+
+    private
+    
+    def game_params
+        params.require(:game).permit(:player_id, :score)
+    end
    
 end
