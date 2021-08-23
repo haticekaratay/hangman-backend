@@ -8,6 +8,13 @@ class PlayersController < ApplicationController
           }, :only => [:id,:name])
     end
 
+    def current_player
+        player = Player.all.last
+        render json: player.to_json(:include => {
+            :games => {:only => [:score]},
+          }, :only => [:id,:name])
+    end
+
     def create
         player = Player.new(player_params)
         if player.save
