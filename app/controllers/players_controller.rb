@@ -15,6 +15,18 @@ class PlayersController < ApplicationController
           }, :only => [:id,:name])
     end
 
+    def best_score
+        player_id = Game.best_score.player_id
+        player =Player.find(player_id)
+        if player 
+        render json: player.to_json(:include => {
+                :games => {:only => [:score]},
+              }, :only => [:id,:name]) 
+        else
+            render json: {message: "Best score not found"}
+        end
+    end
+
     def create
         player = Player.new(player_params)
         if player.save
