@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :words ,only: [:index, :show]
-  resources :games , only: [:create, :show]
+  resources :games , only: [:create, :index]
   resources :players ,only:[:create, :show, :index]
 
   get "/current_player" =>"players#current_player"
